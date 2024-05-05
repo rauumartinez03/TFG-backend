@@ -1,58 +1,61 @@
 import { IsArray, IsDecimal, IsInt, IsNumber, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
-import { Languages } from "../entities/movie.entity";
+
+class Languages{
+    'Primary language': String;
+    'Spoken languages': [String];
+}
 
 export class CreateMovieDto {
     
     @IsInt()
-    @IsOptional()
-    _id: Number;    
+    _id!: Number;    
     
     @IsString()
     @MinLength(1)
-    name: String;
+    name!: String;
     
     @IsInt()
     @Min(1900)
     @Max(2100)
     @IsOptional()
-    date: Number;    
+    date?: Number | '';    
     
     @IsString()
     @IsOptional()
-    tagline: String;    
+    tagline?: String;    
     
     @IsString()
     @IsOptional()
-    description: String;    
+    description?: String;    
     
     @IsInt()
     @IsOptional()
-    minute: Number;    
+    minute?: Number | '';    
     
     @IsNumber()
     @IsOptional()
-    rating: Number;    
+    rating?: Number | '';    
     
     @IsArray()
     @IsString({each: true})
     @IsOptional()
-    studios: String[];    
+    studios?: [String];    
     
     @IsArray()
     @IsString({each: true})
     @IsOptional()
-    genres: String[];    
+    genres?: [String];    
     
     @IsOptional()
-    languages: Languages | String;    
-    
-    @IsArray()
-    @IsString({each: true})
-    @IsOptional()
-    themes: String[];
+    languages?: Languages | String;    
     
     @IsArray()
     @IsString({each: true})
     @IsOptional()
-    countries: String[];
+    themes?: [String];
+    
+    @IsArray()
+    @IsString({each: true})
+    @IsOptional()
+    countries?: [String];
 }

@@ -1,28 +1,52 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { prop } from '@typegoose/typegoose';
 
-export class Languages extends Document{
+class Languages{
+    @prop()
     'Primary language': String;
-    'Spoken languages': String[];
+
+    @prop({type: () => [String]})
+    'Spoken languages': [String];
 }
 
-@Schema()
-export class Movie extends Document {
+export class Movie {
+
+    @prop({ required: true })
+    _id!: Number;
     
-    name: String;
-    date: Number | ''
-    tagline: String;
-    description: String;
-    minute: Number | '';
-    rating: Number | '';
-    studios: [String];
-    genres: [String];
-    languages: Languages | String;
-    themes: [String];
-    countries: [String];
+    @prop({required: true})
+    name!: String;
+
+    @prop()
+    date?: Number | ''
+
+    @prop()
+    tagline?: String;
+
+    @prop()
+    description?: String;
+
+    @prop()
+    minute?: Number | '';
+
+    @prop()
+    rating?: Number | '';
+
+    @prop({type: () => [String]})
+    studios?: [String];
+
+    @prop({type: () => [String]})
+    genres?: [String];
+
+    @prop()
+    languages?: Languages | String;
+
+    @prop({type: () => [String]})
+    themes?: [String];
+
+    @prop({type: () => [String]})
+    countries?: [String];
 }
 
-export const MovieSchema = SchemaFactory.createForClass(Movie)
 
 /*
 {
