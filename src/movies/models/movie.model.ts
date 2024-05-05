@@ -1,4 +1,4 @@
-import { prop } from '@typegoose/typegoose';
+import { Severity, modelOptions, prop } from '@typegoose/typegoose';
 
 export class Languages{
     @prop()
@@ -8,6 +8,7 @@ export class Languages{
     'Spoken languages': [String];
 }
 
+@modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Movie {
 
     @prop({required: true})

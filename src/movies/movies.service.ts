@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
+import { InjectModel } from '@m8a/nestjs-typegoose';
+import { Movie } from './models/movie.model';
+import { ReturnModelType } from '@typegoose/typegoose';
 
 @Injectable()
 export class MoviesService {
-  create(createMovieDto: CreateMovieDto) {
-    return createMovieDto;
+
+  constructor(
+    @InjectModel(Movie) private readonly movieModel: ReturnModelType<typeof Movie>
+  ){}
+
+  async insertOne(createMovieDto: CreateMovieDto) {
+    const createdMovie = new this.movieModel(createMovieDto);
+    return await createdMovie.save();
   }
 
-  findAll() {
-    return `This action returns all movies`;
+  async find() {
+    return await this.movieModel.find().limit(20).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} movie`;
+  async findById(_id: number) {
+    return await this.movieModel.findById(_id).exec();
   }
 
-  update(id: number, updateMovieDto: UpdateMovieDto) {
-    return `This action updates a #${id} movie`;
+  async findByName(name: string) {
+    return await this.movieModel.findOne({name}).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie`;
+  async update(_id: number, updateMovieDto: UpdateMovieDto) {
+    const updatedMovie = new this.movieModel(updateMovieDto);
+    return await this.movieModel.findByIdAndUpdate(_id, updatedMovie, {new: true})
+  }
+
+  async remove(_id: number) {
+    return await this.movieModel.findByIdAndDelete(_id);
   }
 }

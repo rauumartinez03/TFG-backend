@@ -7,6 +7,11 @@ import { Movie } from './models/movie.model';
 @Module({
   controllers: [MoviesController],
   providers: [MoviesService],
-  imports: [TypegooseModule.forFeature([Movie])]
+  imports: [TypegooseModule.forFeature([{
+    typegooseClass: Movie,
+    schemaOptions: {
+      versionKey: false
+    }
+  }])]
 })
 export class MoviesModule {}
