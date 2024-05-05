@@ -5,7 +5,7 @@ import { UpdateMovieDto } from './dto/update-movie.dto';
 @Injectable()
 export class MoviesService {
   create(createMovieDto: CreateMovieDto) {
-    return CreateMovieDto;
+    return createMovieDto;
   }
 
   findAll() {

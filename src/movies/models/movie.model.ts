@@ -1,6 +1,6 @@
 import { prop } from '@typegoose/typegoose';
 
-class Languages{
+export class Languages{
     @prop()
     'Primary language': String;
 
@@ -10,7 +10,7 @@ class Languages{
 
 export class Movie {
 
-    @prop({ required: true })
+    @prop({required: true})
     _id!: Number;
     
     @prop({required: true})
@@ -48,7 +48,7 @@ export class Movie {
 }
 
 
-/*
+/* EXAMPLE FOR TESTING
 {
   "_id": 1000003,
   "name": "Everything Everywhere All at Once",

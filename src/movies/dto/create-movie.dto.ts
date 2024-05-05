@@ -1,8 +1,27 @@
-import { IsArray, IsDecimal, IsInt, IsNumber, IsOptional, IsString, Max, Min, MinLength } from "class-validator";
+import { IsArray, IsInt, IsOptional, IsString, MinLength, Validate, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
+import { Languages } from "../models/movie.model";
 
-class Languages{
-    'Primary language': String;
-    'Spoken languages': [String];
+
+@ValidatorConstraint({name: "Languages-or-string", async: false})
+export class IsLanguagesOrString implements ValidatorConstraintInterface {
+    validate(value: any, validationArguments?: ValidationArguments): boolean | Promise<boolean> {
+        return typeof value === "string" || typeof value === "object";
+    }
+
+    defaultMessage(validationArguments?: ValidationArguments): string {
+        return '($value) must be Languages or string';
+    }
+}
+
+@ValidatorConstraint({name: "Number-or-String", async: false})
+export class IsNumberOrString implements ValidatorConstraintInterface {
+    validate(value: any, validationArguments?: ValidationArguments): boolean | Promise<boolean> {
+        return typeof value === "string" || typeof value === "number";
+    }
+
+    defaultMessage(validationArguments?: ValidationArguments): string {
+        return '($value) must be number or string';
+    }
 }
 
 export class CreateMovieDto {
@@ -14,9 +33,7 @@ export class CreateMovieDto {
     @MinLength(1)
     name!: String;
     
-    @IsInt()
-    @Min(1900)
-    @Max(2100)
+    @Validate(IsNumberOrString)
     @IsOptional()
     date?: Number | '';    
     
@@ -28,11 +45,11 @@ export class CreateMovieDto {
     @IsOptional()
     description?: String;    
     
-    @IsInt()
+    @Validate(IsNumberOrString)
     @IsOptional()
     minute?: Number | '';    
     
-    @IsNumber()
+    @Validate(IsNumberOrString)
     @IsOptional()
     rating?: Number | '';    
     
@@ -46,6 +63,8 @@ export class CreateMovieDto {
     @IsOptional()
     genres?: [String];    
     
+
+    @Validate(IsLanguagesOrString)
     @IsOptional()
     languages?: Languages | String;    
     
@@ -59,3 +78,4 @@ export class CreateMovieDto {
     @IsOptional()
     countries?: [String];
 }
+
