@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { CreateActorsDto } from './dto/create-actors.dto';
 import { UpdateActorsDto } from './dto/update-actors.dto';
+import { InjectModel } from '@m8a/nestjs-typegoose';
+import { Actors } from './models/actors.model';
+import { ReturnModelType } from '@typegoose/typegoose';
 
 @Injectable()
 export class ActorsService {
-  create(createActorsDto: CreateActorsDto) {
-    return 'This action adds a new actor';
+
+  constructor(
+    @InjectModel(Actors) private readonly actorsModel: ReturnModelType<typeof Actors>
+  ){}
+
+  async insertOne(createActorsDto: CreateActorsDto) {
+    const createdActors = new this.actorsModel(createActorsDto);
+    return await createdActors.save();
   }
 
-  findAll() {
-    return `This action returns all actors`;
+  async findOne(id: number) {
+    return await this.actorsModel.findOne({id}).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} actor`;
+  async update(id: number, updateActorsDto: UpdateActorsDto) {
+    return await this.actorsModel.findOneAndUpdate({id}, updateActorsDto).exec();
   }
 
-  update(id: number, updateActorsDto: UpdateActorsDto) {
-    return `This action updates a #${id} actor`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} actor`;
+  async remove(id: number) {
+    return await this.actorsModel.findOneAndDelete({id}).exec();
   }
 }
