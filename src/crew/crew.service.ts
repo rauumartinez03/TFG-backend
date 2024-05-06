@@ -22,13 +22,19 @@ export class CrewService {
   }
 
   async addMember(id: number, updateCrewMemberDto: UpdateCrewMemberDto) {
-    return await this.crewModel.updateOne({id}, {$push: {"crew.$[doc].names": updateCrewMemberDto.name} },
-      {upsert: true, arrayFilters: [{"doc.role": updateCrewMemberDto.role}]}).exec();
+  //TODO: HANDLE ROLE NO EXISTE
+
+    return await this.crewModel.findOneAndUpdate({id}, {$push: {"crew.$[doc].names": updateCrewMemberDto.name} },
+      {arrayFilters: [{"doc.role": updateCrewMemberDto.role}], new: true}).exec();
+    //DEVUELVE EL DOCUMENTO, NO EL RESULTADO
   }
 
   async deleteMember(id: number, updateCrewMemberDto: UpdateCrewMemberDto) {
-    return await this.crewModel.updateOne({id}, {$pop: {"crew.$[doc].names": updateCrewMemberDto.name} },
-      {arrayFilters: [{"doc.role": updateCrewMemberDto.role}]}).exec();
+    //TODO: HANDLE ROLE NO EXISTE
+
+    return await this.crewModel.findOneAndUpdate({id}, {$pop: {"crew.$[doc].names": updateCrewMemberDto.name} },
+      {arrayFilters: [{"doc.role": updateCrewMemberDto.role}], new: true}).exec();
+    //DEVUELVE EL DOCUMENTO, NO EL RESULTADO
   }
 
   async remove(id: number) {

@@ -10,7 +10,8 @@ import { TypegooseModule } from '@m8a/nestjs-typegoose';
   imports: [TypegooseModule.forFeature([{
     typegooseClass: Crew,
     schemaOptions: {
-      versionKey: false
+      versionKey: false,
+      collection: "crew"
     }
   }])]
 })

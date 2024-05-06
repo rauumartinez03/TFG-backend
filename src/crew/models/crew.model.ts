@@ -1,5 +1,6 @@
 import { Severity, modelOptions, prop } from "@typegoose/typegoose";
 
+@modelOptions({schemaOptions: {_id: false}})
 class Role{
     @prop()
     role!: String
@@ -10,7 +11,7 @@ class Role{
 
 @modelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Crew {
-    @prop({required: true, unique: true})
+    @prop({required: true})
     id!: Number
 
     @prop({type: () => [Role]})
