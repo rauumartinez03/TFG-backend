@@ -19,11 +19,11 @@ export class ActorsController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateActorsDto: UpdateActorsDto) {
-    return this.actorsService.update(+id, updateActorsDto);
+    return await this.actorsService.update(+id, updateActorsDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.actorsService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.actorsService.remove(+id);
   }
 }

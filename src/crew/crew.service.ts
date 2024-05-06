@@ -1,26 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCrewDto } from './dto/create-crew.dto';
-import { UpdateCrewDto } from './dto/update-crew.dto';
+import { UpdateCrewMemberDto } from './dto/update-crew-member.dto';
+import { InjectModel } from '@m8a/nestjs-typegoose';
+import { Crew } from './models/crew.model';
+import { ReturnModelType } from '@typegoose/typegoose';
 
 @Injectable()
 export class CrewService {
-  create(createCrewDto: CreateCrewDto) {
-    return 'This action adds a new crew';
+
+  constructor(
+    @InjectModel(Crew) private readonly crewModel: ReturnModelType<typeof Crew>
+  ){}
+
+  async insertOne(createCrewDto: CreateCrewDto) {
+    const createdActors = new this.crewModel(createCrewDto);
+    return await createdActors.save();
   }
 
-  findAll() {
-    return `This action returns all crew`;
+  async findOne(id: number) {
+    return await this.crewModel.findOne({id}).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} crew`;
+  async addMember(id: number, updateCrewMemberDto: UpdateCrewMemberDto) {
+    return await this.crewModel.updateOne({id}, {$push: {"crew.$[doc].names": updateCrewMemberDto.name} },
+      {upsert: true, arrayFilters: [{"doc.role": updateCrewMemberDto.role}]}).exec();
   }
 
-  update(id: number, updateCrewDto: UpdateCrewDto) {
-    return `This action updates a #${id} crew`;
+  async deleteMember(id: number, updateCrewMemberDto: UpdateCrewMemberDto) {
+    return await this.crewModel.updateOne({id}, {$pop: {"crew.$[doc].names": updateCrewMemberDto.name} },
+      {arrayFilters: [{"doc.role": updateCrewMemberDto.role}]}).exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} crew`;
+  async remove(id: number) {
+    return await this.crewModel.findOneAndDelete({id}).exec();
   }
 }

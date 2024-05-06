@@ -1,34 +1,34 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CrewService } from './crew.service';
 import { CreateCrewDto } from './dto/create-crew.dto';
-import { UpdateCrewDto } from './dto/update-crew.dto';
+import { UpdateCrewMemberDto } from './dto/update-crew-member.dto';
 
 @Controller('crew')
 export class CrewController {
   constructor(private readonly crewService: CrewService) {}
 
   @Post()
-  create(@Body() createCrewDto: CreateCrewDto) {
-    return this.crewService.create(createCrewDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.crewService.findAll();
+  async create(@Body() createCrewDto: CreateCrewDto) {
+    return await this.crewService.insertOne(createCrewDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.crewService.findOne(+id);
+  async findById(@Param('id') id: string) {
+    return await this.crewService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCrewDto: UpdateCrewDto) {
-    return this.crewService.update(+id, updateCrewDto);
+  async addCrewMember(@Param('id') id: string, @Body() updateCrewMemberDto: UpdateCrewMemberDto) {
+    return await this.crewService.addMember(+id, updateCrewMemberDto);
+  }
+
+  @Patch(':id')
+  async deleteCrewMember(@Param('id') id: string, @Body() updateCrewMemberDto: UpdateCrewMemberDto) {
+    return await this.crewService.deleteMember(+id, updateCrewMemberDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.crewService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.crewService.remove(+id);
   }
 }
