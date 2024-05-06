@@ -8,8 +8,8 @@ export class ReleasesController {
   constructor(private readonly releasesService: ReleasesService) {}
 
   @Post()
-  create(@Body() createReleaseDto: CreateReleasesDto) {
-    return this.releasesService.create(createReleaseDto);
+  create(@Body() createReleasesDto: CreateReleasesDto) {
+    return this.releasesService.create(createReleasesDto);
   }
 
   @Get()
@@ -23,8 +23,8 @@ export class ReleasesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateReleaseDto: UpdateReleasesDto) {
-    return this.releasesService.update(+id, updateReleaseDto);
+  update(@Param('id') id: string, @Body() updateReleasesDto: UpdateReleasesDto) {
+    return this.releasesService.update(+id, updateReleasesDto);
   }
 
   @Delete(':id')

@@ -8,8 +8,8 @@ export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @Post()
-  create(@Body() createActorDto: CreateActorsDto) {
-    return this.actorsService.create(createActorDto);
+  create(@Body() createActorsDto: CreateActorsDto) {
+    return this.actorsService.create(createActorsDto);
   }
 
   @Get()
@@ -23,8 +23,8 @@ export class ActorsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateActorDto: UpdateActorsDto) {
-    return this.actorsService.update(+id, updateActorDto);
+  update(@Param('id') id: string, @Body() updateActorsDto: UpdateActorsDto) {
+    return this.actorsService.update(+id, updateActorsDto);
   }
 
   @Delete(':id')
